@@ -48,7 +48,9 @@ class VBF:
                 if b"data_format_identifier" in line:
                     self.data_format_identifier = int(line[line.find(b" = ")+3:line.find(b";")].replace(b" ", b"").replace(b"\"", b"").decode(), 16)
                 if b"ecu_address" in line:
-                    self.ecu_address = int(line[line.find(b" = 0x")+5:line.find(b";")].replace(b" ", b"").replace(b"\"", b"").decode(), 16)
+                    line = line.split(b"//")[0]
+                    if b"0x" in line:
+                        self.ecu_address = int(line[line.find(b" = 0x")+5:line.find(b";")].replace(b" ", b"").replace(b"\"", b"").decode(), 16)
                 if b"verification_block_start" in line:
                     self.verification_block_start = int(line[line.find(b" = 0x")+5:line.find(b";")].replace(b" ", b"").replace(b"\"", b"").decode(), 16)
                 if b"frame_format" in line:
@@ -124,3 +126,4 @@ if __name__ == "__main__":
                 print("%8X.bin " % (x[0]))
                 with open(("%8X.bin" % (x[0])).replace(" ", ""), "wb") as f:
                     f.write(x[1])
+    
